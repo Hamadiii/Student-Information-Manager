@@ -1,0 +1,69 @@
+import os, time
+
+Students = {}
+
+try:
+  f = open("SIM.txt", "r")
+  Students = eval(f.read())
+  f.close()
+except:
+  print("""     The file doesn't exist yet! 
+            let's create it""")
+  print()
+  
+  
+def add():
+  os.system("clear")
+  title = "Student Information Manager!"
+  print(f"{title:^50}")
+  name = input("Enter student name:\n>").strip().capitalize()
+  while True:
+    try:
+      age = int(input("Enter student age:\n>"))
+      break
+    except:
+      print("Please! enter a numirical character!!")
+      continue
+  study = input("Enter student field of study\n>").strip().capitalize()
+  Students[name] = {"Age": age, "Study": study}
+  print()
+
+def edit():
+  os.system("clear")
+  whose_info = input("Edit whose info?\n>").strip().capitalize()
+  for key, value in Students.items():
+    if whose_info in Students.keys():
+      edit_what = input(f"Edit what info about {whose_info}?\n>").capitalize()
+      if edit_what == "Age":
+        Students[whose_info]["Age"] = int(input("Change to what?\n>"))
+      elif edit_what == "Study":
+        Students[whose_info]["Study"] = input("Change to what?\n>").capitalize()
+
+def remove():
+  os.system("clear")
+  remove_what = input("Who do you want to remove?\n>").strip().capitalize()
+  if remove_what in Students.keys():
+    del Students[remove_what]
+
+def view():
+  os.system("clear")
+  for key, value in Students.items():
+    print(f"{key}", end = ": ")
+    for subkey, subvalue in value.items():
+      print(f"{subvalue}", end = " | ")
+    print()
+
+while True:
+  Menu = input("1- add\n2- edit\n3- remove\n4- view\n>")
+  if Menu == "1":
+    add()
+  elif Menu == "2":
+    edit()
+  elif Menu == "3":
+    remove()
+  elif Menu == "4":
+    view()
+
+  f = open("SIM.txt", "w")
+  f.write(str(Students))
+  f.close()
